@@ -17,41 +17,34 @@ Fraction::Fraction(int _numerator,
 {
     if (_denominator == 0)
     {
-         __throw_invalid_argument("denominator is 0");
+        __throw_invalid_argument("denominator is 0");
     }
     if (typeid(_numerator).name() != typeid(int).name() || typeid(_denominator).name() != typeid(int).name())
     {
         __throw_bad_typeid();
     }
 
-    if (_numerator < 0 && _denominator < 0 || _denominator < 0)
+    if ((_numerator < 0 && _denominator < 0) || (_denominator < 0))
     {
         numerator *= -1;
         denominator *= -1;
     }
-   
 }
 
 Fraction::Fraction(float flt)
 {
     // convert from float to fraction
-    int power = 1;
-    // float cpy = flt;
+    this->numerator=std::round(flt * 1000.0);
+    this->denominator =1000;
 
-    while (flt != (int)flt && power < 1000)
-    {   // as long as the decimal value isn't 0
-        // the limitation on power is because we want to have up to 3 digits beyond the desimal point
-        //&& number != (int)number
-        power *= 10;
-        flt *= 10;
+    if ((numerator < 0 && denominator < 0) || (denominator < 0))
+    {
+        numerator *= -1;
+        denominator *= -1;
     }
-    this->numerator = flt;
-    this->denominator = power;
-
-
 }
 
-Fraction Fraction::reduced(int numerator, int denominator) const 
+Fraction Fraction::reduced(int numerator, int denominator) const
 {
     int gcd = my_gcd(abs(numerator), abs(denominator));
     return Fraction(numerator /= gcd, denominator / gcd);
@@ -68,15 +61,36 @@ int Fraction::lcm(int denom1, int denom2) const
 // ADD
 const Fraction Fraction::operator+(const Fraction &other) const
 {
-    //if (this. > 0 && *this > INT_MAX -1- other) {
-     //   __throw_overflow_error("overflow error");
-   // }
-        int new_numr = (this->numerator * other.denominator) + (other.numerator * this->denominator);
-        int new_denom = this->denominator * other.denominator;
-        return reduced(new_numr, new_denom);
-        // return Fraction(new_numr,new_denom);
-   // }
-   
+    int max_int = std::numeric_limits<int>::max();
+    int min_int = std::numeric_limits<int>::min();
+    // long long   new_numr=(this->numerator * other.denominator) + (other.numerator * this->denominator);
+    // long long  new_denom=this->denominator * other.denominator;
+
+    long long int numr1 = this->numerator;
+    long long int numr2 = other.getNumerator();
+    long long int denom1 = this->denominator;
+    long long int denom2 = other.getDenominator();
+
+    long long int new_numr = numr1 * denom2 + numr2 * denom1;
+    long long int new_denom = denom1 * denom2;
+
+    if (new_numr > (max_int) || new_denom > max_int)
+    {
+        cout << "hello big" << endl;
+        throw overflow_error("number is too big ");
+    }
+    if (new_numr < min_int || new_denom < min_int)
+    {
+        cout << "hello small" << endl;
+        throw overflow_error("number is too small");
+    }
+
+    // int new_numr = (this->numerator * other.denominator) + (other.numerator * this->denominator);
+    // int new_denom = this->denominator * other.denominator;
+
+
+    //  slicing - from long long to int
+    return reduced(int(new_numr), int(new_denom));
 }
 
 const Fraction Fraction::operator+(const float &_float) const
@@ -96,9 +110,30 @@ const Fraction operator+(const float &float_, const Fraction &frac)
 // SUBSTRACT
 const Fraction Fraction::operator-(const Fraction &other) const
 {
-    int new_numr = (this->numerator * other.denominator) - (other.numerator * this->denominator);
-    int new_denom = this->denominator * other.denominator;
-    return reduced(new_numr, new_denom);
+    int max_int = std::numeric_limits<int>::max();
+    int min_int = std::numeric_limits<int>::min();
+    long long int numr1 = this->numerator;
+    long long int numr2 = other.getNumerator();
+    long long int denom1 = this->denominator;
+    long long int denom2 = other.getDenominator();
+
+    long long int new_numr = numr1 * denom2 - numr2 * denom1;
+    long long int new_denom = denom1 * denom2;
+
+    if (new_numr > (max_int) || new_denom > max_int)
+    {
+        cout << "hello big" << endl;
+        throw overflow_error("number is too big ");
+    }
+    if (new_numr < min_int || new_denom < min_int)
+    {
+        cout << "hello small" << endl;
+        throw overflow_error("number is too small");
+    }
+
+    // int new_numr = (this->numerator * other.denominator) - (other.numerator * this->denominator);
+    // int new_denom = this->denominator * other.denominator;
+    return reduced(int(new_numr), int(new_denom));
     // return Fraction(new_numr,new_denom);
 }
 const Fraction Fraction::operator-(const float &_float) const
@@ -114,9 +149,37 @@ const Fraction operator-(const float &float_, const Fraction &frac)
 // MULTIPLY
 const Fraction Fraction::operator*(const Fraction &other) const
 {
-    int new_numr = this->numerator * other.numerator;
-    int new_denom = this->denominator * other.denominator;
-    return reduced(new_numr, new_denom);
+    // reduce in order to handle the case of f3*f4
+   Fraction rdc1=reduced(numerator,denominator);
+    Fraction rdc2=reduced(other.getNumerator(),other.getDenominator());
+    int max_int = std::numeric_limits<int>::max();
+    int min_int = std::numeric_limits<int>::min();
+    // long long int numr1=this->numerator;
+    // long long int numr2=other.getNumerator();
+    // long long int denom1=this->denominator;
+    // long long int denom2=other.getDenominator();
+    long long int numr1=rdc1.getNumerator();
+    long long int numr2=rdc2.getNumerator();
+    long long int denom1=rdc1.getDenominator();
+    long long int denom2=rdc2.getDenominator();
+
+    long long int new_numr = numr1 * numr2;
+    long long int new_denom = denom1 * denom2;
+
+    if (new_numr > (max_int) || new_denom > max_int)
+    {
+        cout << "hello big" << endl;
+        throw overflow_error("number is too big ");
+    }
+    if (new_numr < min_int || new_denom < min_int)
+    {
+        cout << "hello small" << endl;
+        throw overflow_error("number is too small");
+    }
+
+    //  int new_numr = this->numerator * other.numerator;
+    // int new_denom = this->denominator * other.denominator;
+    return reduced(int(new_numr), int(new_denom));
     //  return Fraction(new_numr,new_denom);
 }
 
@@ -132,20 +195,51 @@ const Fraction operator*(const float &float_, const Fraction &frac)
 
 // DIVIDE
 const Fraction Fraction::operator/(const Fraction &other) const
-{   
-    if (other.numerator == 0 )
+{
+   
+    if (other.numerator == 0)
     {
-         __throw_runtime_error("can't divide by 0");
+        __throw_runtime_error("can't divide by 0");
     }
-    int new_numr = (this->numerator * other.denominator);
-    int new_denom = other.numerator * this->denominator;
-    if((new_numr/new_denom)>std::numeric_limits<int>::max()){
-        throw std::overflow_error("answer is too big");
+    // reduce in order to handle the case of f4/f3
+    Fraction rdc1=reduced(numerator,denominator);
+    Fraction rdc2=reduced(other.getNumerator(),other.getDenominator());
+    int max_int = std::numeric_limits<int>::max();
+    int min_int = std::numeric_limits<int>::min();
+    // long long int numr1=this->numerator;
+    // long long int numr2=other.getNumerator();
+    // long long int denom1=this->denominator;
+    // long long int denom2=other.getDenominator();
+    long long int numr1=rdc1.getNumerator();
+    long long int numr2=rdc2.getNumerator();
+    long long int denom1=rdc1.getDenominator();
+    long long int denom2=rdc2.getDenominator();
+
+    
+    long long int new_numr=numr1*denom2;
+    long long int new_denom=numr2*denom1;
+
+    if(new_numr > (max_int) || new_denom > max_int){
+        cout<<"hello big"<<endl;
+        throw overflow_error("number is too big ");
     }
-    if((new_numr/new_denom)<std::numeric_limits<int>::min()){
-        throw std::overflow_error("answer is too small");
+    if(new_numr < min_int ||  new_denom < min_int ){
+        cout<<"hello small"<<endl;
+        throw overflow_error( "number is too small");
     }
-    return reduced(new_numr, new_denom);
+
+
+   // int new_numr = (this->numerator * other.denominator);
+    //int new_denom = other.numerator * this->denominator;
+    // if ((new_numr / new_denom) > std::numeric_limits<int>::max())
+    // {
+    //     throw std::overflow_error("answer is too big");
+    // }
+    // if ((new_numr / new_denom) < std::numeric_limits<int>::min())
+    // {
+    //     throw std::overflow_error("answer is too small");
+    // }
+    return reduced(int(new_numr), int(new_denom));
     // return Fraction(new_numr,new_denom);
 }
 const Fraction Fraction::operator/(const float &_float) const
@@ -158,7 +252,7 @@ const Fraction operator/(const float &float_, const Fraction &frac)
 {
     if (frac.numerator == 0)
     {
-         __throw_runtime_error("can't divide by 0");
+        __throw_runtime_error("can't divide by 0");
     }
     return Fraction(float_) / frac;
 }
@@ -262,35 +356,42 @@ bool operator<=(const float &float_, const Fraction &frac)
 }
 
 // prefix
-Fraction& Fraction::operator++() {
-    numerator+=denominator;
+Fraction &Fraction::operator++()
+{
+    numerator += denominator;
     reduced();
     return *this;
 }
 
-//postfix
-Fraction Fraction::operator++(int dummy_flag_for_postfix_increment) {
+// postfix
+Fraction Fraction::operator++(int dummy_flag_for_postfix_increment)
+{
     Fraction copy = *this;
     ++(*this);
     return copy;
 }
 
 // print a fraction to an output stream
-std::ostream &operator<<(std::ostream &output, const Fraction &frac)
+std::ostream& operator<<(std::ostream& output, const Fraction& frac)
 {
-    output << frac.numerator << '/' << frac.denominator;
+    int gcd=__gcd(abs(frac.numerator),abs(frac.denominator));
+    //my_gcd(frac.numerator,frac.denominator);
+    // int new_numr=frac.numerator/gcd;
+    // int nuw_denom=
+    output << (frac.numerator/gcd) << '/' << frac.denominator/gcd;
     return output;
 }
 
 istream &operator>>(istream &input, Fraction &fraction)
 {
     int numerator, denominator;
-    //char ;
-    
+    // char ;
+
     input >> numerator >> denominator;
 
-    if(denominator==0){
-       throw std::runtime_error("invalid input") ; 
+    if (denominator == 0)
+    {
+        throw std::runtime_error("invalid input");
     }
 
     fraction = Fraction(numerator, denominator);
