@@ -44,11 +44,9 @@ Fraction::Fraction(float flt)
     }
 }
 
-
-
 int Fraction::my_gcd(int _numerator, int _denominator) const
 {
-    return (_denominator == 0) ? _numerator:my_gcd(_denominator, _numerator % _denominator);
+    return (_denominator == 0) ? _numerator : my_gcd(_denominator, _numerator % _denominator);
 }
 
 int Fraction::lcm(int denom1, int denom2) const
@@ -68,8 +66,6 @@ Fraction Fraction::reduced(int numerator, int denominator) const
     int gcd = my_gcd(abs(numerator), abs(denominator));
     return Fraction(numerator /= gcd, denominator / gcd);
 }
-
-
 
 // ADD
 const Fraction Fraction::operator+(const Fraction &other) const
@@ -98,21 +94,20 @@ const Fraction Fraction::operator+(const Fraction &other) const
     return reduced(int(new_numr), int(new_denom));
 }
 
-const Fraction Fraction::operator+(const float &_float) const
+const Fraction Fraction::operator+(const float& _float) const
 {
     // use in the above + function
     // this is a pointer, *this is the value i.e the fraction
     return *this + Fraction(_float);
-
 }
 
-const Fraction operator+(const float &float_, const Fraction &frac)
+const Fraction operator+(const float& float_, const Fraction& frac)
 {
     return Fraction(float_) + frac;
 }
 
 // SUBSTRACT
-const Fraction Fraction::operator-(const Fraction &other) const
+const Fraction Fraction::operator-(const Fraction& other) const
 {
     int max_int = std::numeric_limits<int>::max();
     int min_int = std::numeric_limits<int>::min();
@@ -134,25 +129,25 @@ const Fraction Fraction::operator-(const Fraction &other) const
     }
     return reduced(int(new_numr), int(new_denom));
 }
-const Fraction Fraction::operator-(const float &_float) const
+const Fraction Fraction::operator-(const float& _float) const
 {
     return *this - Fraction(_float);
 }
 
-const Fraction operator-(const float &float_, const Fraction &frac)
+const Fraction operator-(const float& float_, const Fraction& frac)
 {
     return Fraction(float_) - frac;
 }
 
 // MULTIPLY
-const Fraction Fraction::operator*(const Fraction &other) const
+const Fraction Fraction::operator*(const Fraction& other) const
 {
     // reduce in order to handle the case of f3*f4
     Fraction rdc1 = reduced(numerator, denominator);
     Fraction rdc2 = reduced(other.getNumerator(), other.getDenominator());
     int max_int = std::numeric_limits<int>::max();
     int min_int = std::numeric_limits<int>::min();
-   
+
     long long int numr1 = rdc1.getNumerator();
     long long int numr2 = rdc2.getNumerator();
     long long int denom1 = rdc1.getDenominator();
@@ -173,18 +168,18 @@ const Fraction Fraction::operator*(const Fraction &other) const
     return reduced(int(new_numr), int(new_denom));
 }
 
-const Fraction Fraction::operator*(const float &_float) const
+const Fraction Fraction::operator*(const float& _float) const
 {
     return (*this) * Fraction(_float);
 }
 
-const Fraction operator*(const float &float_, const Fraction &frac)
+const Fraction operator*(const float& float_, const Fraction& frac)
 {
     return Fraction(float_) * frac;
 }
 
 // DIVIDE
-const Fraction Fraction::operator/(const Fraction &other) const
+const Fraction Fraction::operator/(const Fraction& other) const
 {
 
     if (other.numerator == 0)
@@ -196,7 +191,7 @@ const Fraction Fraction::operator/(const Fraction &other) const
     Fraction rdc2 = reduced(other.getNumerator(), other.getDenominator());
     int max_int = std::numeric_limits<int>::max();
     int min_int = std::numeric_limits<int>::min();
-   
+
     long long int numr1 = rdc1.getNumerator();
     long long int numr2 = rdc2.getNumerator();
     long long int denom1 = rdc1.getDenominator();
@@ -216,7 +211,7 @@ const Fraction Fraction::operator/(const Fraction &other) const
     return reduced(int(new_numr), int(new_denom));
 }
 
-const Fraction Fraction::operator/(const float &_float) const
+const Fraction Fraction::operator/(const float& _float) const
 {
     if (_float == 0)
         __throw_runtime_error("can't divide by 0");
@@ -233,7 +228,7 @@ const Fraction operator/(const float &float_, const Fraction &frac)
 }
 
 // EQUALITY COMPARISON
-bool Fraction::operator==(const Fraction &other) const
+bool Fraction::operator==(const Fraction& other) const
 {
     // reduce both fractions , and then compare
     Fraction frac1 = reduced(this->numerator, this->denominator);
@@ -241,51 +236,51 @@ bool Fraction::operator==(const Fraction &other) const
     return frac1.numerator == frac2.numerator && frac1.denominator == frac2.denominator;
 }
 
-bool Fraction::operator==(const float &float_) const
+bool Fraction::operator==(const float& float_) const
 {
     Fraction float_frac = Fraction(float_);
     return *this == float_frac;
 }
 
-bool operator==(const float &float_, const Fraction &frac)
+bool operator==(const float& float_, const Fraction& frac)
 {
     Fraction float_frac = Fraction(float_);
     return frac == float_frac;
 }
 
 // BIGGER COMPARISON
-bool Fraction::operator>(const Fraction &other) const
+bool Fraction::operator>(const Fraction& other) const
 {
     int _lcm = lcm(this->denominator, other.getDenominator());
     Fraction frac1 = Fraction(this->numerator * (_lcm / this->denominator), _lcm);
     Fraction frac2 = Fraction(other.getNumerator() * (_lcm / other.getDenominator()), _lcm);
     return frac1.numerator > frac2.numerator;
 }
-bool Fraction::operator>(const float &float_) const
+bool Fraction::operator>(const float& float_) const
 {
     Fraction float_frac = Fraction(float_);
     return *this > float_frac;
 }
-bool operator>(const float &float_, const Fraction &frac)
+bool operator>(const float& float_, const Fraction& frac)
 {
     Fraction float_frac = Fraction(float_);
     return float_frac > frac;
 }
 
 // SMALLER COMPARISON
-bool Fraction::operator<(const Fraction &other) const
+bool Fraction::operator<(const Fraction& other) const
 {
     int _lcm = lcm(this->denominator, other.getDenominator());
     Fraction frac1 = Fraction(this->numerator * (_lcm / this->denominator), _lcm);
     Fraction frac2 = Fraction(other.getNumerator() * (_lcm / other.getDenominator()), _lcm);
     return frac1.numerator < frac2.numerator;
 }
-bool Fraction::operator<(const float &float_) const
+bool Fraction::operator<(const float& float_) const
 {
     Fraction float_frac = Fraction(float_);
     return *this < float_frac;
 }
-bool operator<(const float &float_, const Fraction &frac)
+bool operator<(const float& float_, const Fraction& frac)
 {
     Fraction float_frac = Fraction(float_);
     return float_frac < frac;
@@ -293,45 +288,45 @@ bool operator<(const float &float_, const Fraction &frac)
 
 // BIGGER-EQUAL COMPARISON
 
-bool Fraction::operator>=(const Fraction &other) const
+bool Fraction::operator>=(const Fraction& other) const
 {
     int _lcm = lcm(this->denominator, other.getDenominator());
     Fraction frac1 = Fraction(this->numerator * (_lcm / this->denominator), _lcm);
     Fraction frac2 = Fraction(other.getNumerator() * (_lcm / other.getDenominator()), _lcm);
     return frac1.numerator >= frac2.numerator;
 }
-bool Fraction::operator>=(const float &float_) const
+bool Fraction::operator>=(const float& float_) const
 {
     Fraction float_frac = Fraction(float_);
     return *this >= float_frac;
 }
-bool operator>=(const float &float_, const Fraction &frac)
+bool operator>=(const float& float_, const Fraction& frac)
 {
     Fraction float_frac = Fraction(float_);
     return float_frac >= frac;
 }
 
 // SMALLER-EQUAL COMPARISON
-bool Fraction::operator<=(const Fraction &other) const
+bool Fraction::operator<=(const Fraction& other) const
 {
     int _lcm = lcm(this->denominator, other.getDenominator());
     Fraction frac1 = Fraction(this->numerator * (_lcm / this->denominator), _lcm);
     Fraction frac2 = Fraction(other.getNumerator() * (_lcm / other.getDenominator()), _lcm);
     return frac1.numerator <= frac2.numerator;
 }
-bool Fraction::operator<=(const float &float_) const
+bool Fraction::operator<=(const float& float_) const
 {
     Fraction float_frac = Fraction(float_);
     return *this <= float_frac;
 }
-bool operator<=(const float &float_, const Fraction &frac)
+bool operator<=(const float& float_, const Fraction& frac)
 {
     Fraction float_frac = Fraction(float_);
     return float_frac <= frac;
 }
 
 // prefix
-Fraction &Fraction::operator++()
+Fraction& Fraction::operator++()
 {
     numerator += denominator;
     reduced();
@@ -347,14 +342,14 @@ Fraction Fraction::operator++(int dummy_flag_for_postfix_increment)
 }
 
 // print a fraction to an output stream
-std::ostream &operator<<(std::ostream &output, const Fraction &frac)
+std::ostream& operator<<(std::ostream &output, const Fraction &frac)
 {
     int gcd = __gcd(abs(frac.numerator), abs(frac.denominator));
     output << (frac.numerator / gcd) << '/' << frac.denominator / gcd;
     return output;
 }
 
-istream &operator>>(istream &input, Fraction &fraction)
+istream& operator>>(istream &input, Fraction &fraction)
 {
     int numerator, denominator;
     input >> numerator >> denominator;

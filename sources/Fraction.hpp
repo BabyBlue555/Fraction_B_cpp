@@ -1,7 +1,7 @@
 
 #ifndef FRACTION_HPP
 #define FRACTION_HPP
-#define INT_ADD_OVERFLOW_P(this,other)
+#define INT_ADD_OVERFLOW_P(this, other)
 
 #include <iostream>
 #include <stdexcept>
@@ -24,45 +24,82 @@ private:
     int denominator;
 
 public:
-    // outline constructors
+    /*
+    * @brief default constructor
+    */
     Fraction();
+
+    /*
+     * @brief constructor that takes two ints and builds a Fraction
+     * @param _numerator The numerator of the fraction.
+     * @param _denominator The denominator of the fraction.
+     */
     Fraction(int _numerator, int _denominator);
+
+    /*
+     * @brief constructor that converts a float to Fraction
+     * @param flt The float we want to convert
+     */
     Fraction(float flt);
 
+    /*
+     * @brief getter of numerator 
+     * @return the numerator of a Fraction
+     */
     int getNumerator() const
     {
         return this->numerator;
     }
 
+    /*
+    * @brief getter of denominator
+    * @return the denominator of a Fraction
+    */
     int getDenominator() const
     {
         return this->denominator;
     }
 
+    /*
+    * @brief setter of numerator
+    * @param the numerator of the Fraction
+    */    
     void setNuminator(int _numerator)
     {
         this->numerator = _numerator;
     }
 
+    /*
+    * @brief setter of denominator
+    * @param the denominator of the Fraction
+    */    
     void setDenom(int _denominator)
     {
         this->denominator = _denominator;
     }
 
+
     void reduced();
 
     /*
-    returns the greatest common divisor of the fractions
-    int gcd(int num,int denom);
+    * @param numerator the numerator of the Fraction
+    * @param denominator the denominator of the Fraction
+    * @return the reduced form of the fraction of these params
     */
     Fraction reduced(int numerator, int denominator) const;
 
     /*
-    returns the least common multiplier
+    * @param _numerator numerator of fraction
+    * @param _denominator denominator of fraction
+    * @return int the least common multiplier
     */
-
     int my_gcd(int _numerator, int _denominator) const;
 
+    /*
+    * @param denom1 denominator of first fraction 
+    * @param denom2 denominator of second fraction 
+    * @return int the least common multiplier of the denominators
+    */
     int lcm(int denom1, int denom2) const;
 
     /*
@@ -74,55 +111,67 @@ public:
     */
 
     // add
-    const Fraction operator+(const Fraction &other) const;
-    const Fraction operator+(const float &num) const;
-    friend const Fraction operator+(const float &flo1, const Fraction &frac2);
+
+    /*
+    * @brief adds two fractions 
+    * @param other The fraction to add
+    * @return const Fraction The result of the addition
+    */
+    const Fraction operator+(const Fraction& other) const;
+
+    /*
+    * @brief adds two fractions 
+    * @param other The fraction to add
+    * @return const Fraction The result of the addition
+    */
+    const Fraction operator+(const float& num) const;
+    friend const Fraction operator+(const float& _float, const Fraction& frac);
 
     // substract
-    const Fraction operator-(const Fraction &other) const;
-    const Fraction operator-(const float &_float) const;
-    friend const Fraction operator-(const float &flo1, const Fraction &frac2);
+    const Fraction operator-(const Fraction& other) const;
+    const Fraction operator-(const float& _float) const;
+    friend const Fraction operator-(const float& _float, const Fraction& frac);
 
     // multiply
-    const Fraction operator*(const Fraction &other) const;
-    const Fraction operator*(const float &_float) const;
-    friend const Fraction operator*(const float &flo1, const Fraction &frac2);
+    const Fraction operator*(const Fraction& other) const;
+    const Fraction operator*(const float& _float) const;
+    friend const Fraction operator*(const float& _float, const Fraction& frac);
 
     // divide
-    const Fraction operator/(const Fraction &other) const;
-    const Fraction operator/(const float &_float) const;
-    friend const Fraction operator/(const float &flo1, const Fraction &frac2);
+    const Fraction operator/(const Fraction& other) const;
+    const Fraction operator/(const float& _float) const;
+    friend const Fraction operator/(const float& _float, const Fraction& frac);
 
     // comparison equality
-    bool operator==(const Fraction &other) const;
-    bool operator==(const float &_float) const;
-    friend bool operator==(const float &float_, const Fraction &frac);
+    bool operator==(const Fraction& other) const;
+    bool operator==(const float& _float) const;
+    friend bool operator==(const float& _float, const Fraction& frac);
 
     // comparison operations (>,<,>=,<=)
-    bool operator>(const Fraction &other) const;
-    bool operator>(const float &float_) const;
-    friend bool operator>(const float &float_, const Fraction &frac);
+    bool operator>(const Fraction& other) const;
+    bool operator>(const float& float_) const;
+    friend bool operator>(const float& float_, const Fraction& frac);
 
-    bool operator<(const Fraction &other) const;
-    bool operator<(const float &float_) const;
-    friend bool operator<(const float &float_, const Fraction &frac);
+    bool operator<(const Fraction& other) const;
+    bool operator<(const float& float_) const;
+    friend bool operator<(const float& float_, const Fraction& frac);
 
-    bool operator>=(const Fraction &other) const;
-    bool operator>=(const float &float_) const;
-    friend bool operator>=(const float &float_, const Fraction &frac);
+    bool operator>=(const Fraction& other) const;
+    bool operator>=(const float& float_) const;
+    friend bool operator>=(const float& float_, const Fraction& frac);
 
-    bool operator<=(const Fraction &other) const;
-    bool operator<=(const float &float_) const;
-    friend bool operator<=(const float &float_, const Fraction &frac);
+    bool operator<=(const Fraction& other) const;
+    bool operator<=(const float& float_) const;
+    friend bool operator<=(const float& float_, const Fraction& frac);
 
     // prefix increment: returns the fraction after increment
-    Fraction &operator++();
+    Fraction& operator++();
 
     // postfix increment: returns copy of the fraction - its value before increment
     Fraction operator++(int dummy_flag_for_postfix_increment);
 
     // prefix decrease
-    Fraction &operator--()
+    Fraction& operator--()
     {
         numerator -= denominator;
         reduced();
