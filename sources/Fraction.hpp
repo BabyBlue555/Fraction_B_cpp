@@ -2,8 +2,6 @@
 #ifndef FRACTION_HPP
 #define FRACTION_HPP
 #define INT_ADD_OVERFLOW_P(this,other)
-// #define MAX_INT = std::numeric_limits<int>::max()
-// #define MIN_INT = std::numeric_limits<int>::min()
 
 #include <iostream>
 #include <stdexcept>
@@ -51,12 +49,7 @@ public:
         this->denominator = _denominator;
     }
 
-    void reduced()
-    {
-        int gcd = __gcd(abs(numerator), abs(denominator));
-        numerator /= gcd;
-        denominator /= gcd;
-    }
+    void reduced();
 
     /*
     returns the greatest common divisor of the fractions
@@ -68,10 +61,8 @@ public:
     returns the least common multiplier
     */
 
-    static int my_gcd(int _numerator, int _denominator)
-    {
-        return (_denominator == 0) ? _numerator:my_gcd(_denominator, _numerator % _denominator);
-    }
+    int my_gcd(int _numerator, int _denominator) const;
+
     int lcm(int denom1, int denom2) const;
 
     /*
