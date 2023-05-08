@@ -46,10 +46,9 @@ Fraction::Fraction(float flt)
 
 Fraction Fraction::reduced(int numerator, int denominator) const
 {
+  
     int gcd = my_gcd(abs(numerator), abs(denominator));
     return Fraction(numerator /= gcd, denominator / gcd);
-    // numerator /= gcd;
-    // numerator /= gcd;
 }
 
 int Fraction::lcm(int denom1, int denom2) const
@@ -375,9 +374,6 @@ Fraction Fraction::operator++(int dummy_flag_for_postfix_increment)
 std::ostream& operator<<(std::ostream& output, const Fraction& frac)
 {
     int gcd=__gcd(abs(frac.numerator),abs(frac.denominator));
-    //my_gcd(frac.numerator,frac.denominator);
-    // int new_numr=frac.numerator/gcd;
-    // int nuw_denom=
     output << (frac.numerator/gcd) << '/' << frac.denominator/gcd;
     return output;
 }
@@ -385,12 +381,14 @@ std::ostream& operator<<(std::ostream& output, const Fraction& frac)
 istream &operator>>(istream &input, Fraction &fraction)
 {
     int numerator, denominator;
-    // char ;
-
     input >> numerator >> denominator;
 
     if (denominator == 0)
     {
+        throw std::runtime_error("invalid input");
+    }
+
+    if(input.fail()){
         throw std::runtime_error("invalid input");
     }
 

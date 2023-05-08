@@ -70,22 +70,7 @@ public:
 
     static int my_gcd(int _numerator, int _denominator)
     {
-        //  return (_denominator == 0) ? _numerator:__gcd(_denominator, _numerator % _denominator);
-        if (_numerator == 0)
-        {
-            return _denominator;
-        }
-        if (_denominator == 0)
-        {
-            return _numerator;
-        }
-        _numerator = abs(_numerator);
-        _denominator = abs(_denominator);
-        if (_numerator > _denominator)
-        {
-            return my_gcd(_denominator, _numerator);
-        }
-        return my_gcd(_denominator % _numerator, _numerator);
+        return (_denominator == 0) ? _numerator:my_gcd(_denominator, _numerator % _denominator);
     }
     int lcm(int denom1, int denom2) const;
 
