@@ -35,25 +35,6 @@ int main()
     else
         cout << " a is smaller than 1.1" << endl;
 
-    // char ch2 = ' ';
-    // if (isspace(ch2))
-    //     cout << "ch2 is a space" << endl;
-    // istringstream is("6 8 3 0"); 
-    // int numerator, denominator;
-    // char wspace;
 
-    // is >> numerator>>denominator ;
-    // cout<<numerator<<endl;
-    // //cout<<wspace<<endl;
-    // cout<<"hello"<<denominator<<"bye"<<endl;
-    // if(wspace== '\f')
-    //     cout << "ch2 is a space" << endl;
-
-    std::stringstream ss_zero_denominator("6 8 3 0");
-   // ss_zero_denominator.str("6 8 3 0");
-    // Fraction frac2, frac3,frac4;
-    // ss_zero_denominator >> frac2>>frac3 ;
-    // cout<<frac2<<frac3;
-    // cout<<frac3<<endl;
     
 }
