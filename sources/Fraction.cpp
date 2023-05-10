@@ -55,12 +55,7 @@ int Fraction::lcm(int denom1, int denom2) const
     return _lcm;
 }
 
-void Fraction::reduced()
-{
-    int gcd = __gcd(abs(numerator), abs(denominator));
-    numerator /= gcd;
-    denominator /= gcd;
-}
+
 Fraction Fraction::reduced(int numerator, int denominator) const
 {
     int gcd = my_gcd(abs(numerator), abs(denominator));
@@ -325,21 +320,38 @@ bool operator<=(const float& float_, const Fraction& frac)
     return float_frac <= frac;
 }
 
-// prefix
+// prefix - increase
 Fraction& Fraction::operator++()
 {
     numerator += denominator;
-    reduced();
+    *this=reduced(numerator,denominator);
     return *this;
 }
 
-// postfix
+// postfix - increase
 Fraction Fraction::operator++(int dummy_flag_for_postfix_increment)
 {
     Fraction copy = *this;
     ++(*this);
     return copy;
 }
+
+// prefix - decrease
+Fraction& Fraction::operator--()
+{
+    numerator -= denominator;
+    *this=reduced(numerator,denominator);
+    return *this;
+}
+
+// postfix decrease
+Fraction Fraction::operator--(int dummy_flag_for_postfix_increment)
+{
+    Fraction copy = *this;
+    --(*this);
+    return copy;
+}
+
 
 // print a fraction to an output stream
 std::ostream& operator<<(std::ostream &output, const Fraction &frac)

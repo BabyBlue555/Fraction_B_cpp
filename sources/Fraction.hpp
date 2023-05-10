@@ -1,7 +1,6 @@
 
 #ifndef FRACTION_HPP
 #define FRACTION_HPP
-#define INT_ADD_OVERFLOW_P(this, other)
 
 #include <iostream>
 #include <stdexcept>
@@ -78,20 +77,19 @@ public:
         this->denominator = _denominator;
     }
 
-
-    void reduced();
-
     /*
     * @param numerator the numerator of the Fraction
     * @param denominator the denominator of the Fraction
     * @return the reduced form of the fraction of these params
+    * @note used in all fraction operations, such as +,-,*,/,postfix,prefix
     */
     Fraction reduced(int numerator, int denominator) const;
 
     /*
     * @param _numerator numerator of fraction
     * @param _denominator denominator of fraction
-    * @return int the least common multiplier
+    * @return int the greatest common divisor 
+    * @note used in reduced() and in the tests in order to check the function has worked 
     */
     int my_gcd(int _numerator, int _denominator) const;
 
@@ -99,6 +97,7 @@ public:
     * @param denom1 denominator of first fraction 
     * @param denom2 denominator of second fraction 
     * @return int the least common multiplier of the denominators
+    * @note used for comparison between fractions, such as <,>,<= , but not in == 
     */
     int lcm(int denom1, int denom2) const;
 
@@ -110,81 +109,140 @@ public:
     since they return a reference, because the value of the object has changed.
     */
 
-    // add
+   
 
     /*
     * @brief adds two fractions 
-    * @param other The fraction to add
+    * @param other The reference to the fraction to add
     * @return const Fraction The result of the addition
     */
     const Fraction operator+(const Fraction& other) const;
 
     /*
-    * @brief adds two fractions 
-    * @param other The fraction to add
+    * @brief adds two fractions, after converting one of them 
+    * @param num The reference to the float we add
     * @return const Fraction The result of the addition
     */
     const Fraction operator+(const float& num) const;
+
+    /*
+    * @brief adds two fractions, after converting one of them 
+    * @param _float const reference to the float 
+    * @param frac   const reference to the fraction we add to the first fraction
+    * @return const Fraction The result of the addition
+    * @note friend function, since the first argument is not a Fraction object
+    */
     friend const Fraction operator+(const float& _float, const Fraction& frac);
 
-    // substract
+    
     const Fraction operator-(const Fraction& other) const;
     const Fraction operator-(const float& _float) const;
+      /*
+    * @brief adds two fractions, after converting one of them 
+    * @param _float const reference to the float 
+    * @param frac   const reference to the fraction we add to the first fraction
+    * @return const Fraction The result of the addition
+    * @note friend function, since the first argument is not a Fraction object
+    */
     friend const Fraction operator-(const float& _float, const Fraction& frac);
 
-    // multiply
+    
     const Fraction operator*(const Fraction& other) const;
     const Fraction operator*(const float& _float) const;
+    /*
+    * @brief multiply two fractions, after converting one of them 
+    * @param _float const reference to the float 
+    * @param frac   const reference to the fraction we add to the first fraction
+    * @return const Fraction The result of the multiplication
+    * @note friend function, since the first argument is not a Fraction object
+    */
     friend const Fraction operator*(const float& _float, const Fraction& frac);
 
-    // divide
+
     const Fraction operator/(const Fraction& other) const;
     const Fraction operator/(const float& _float) const;
+      /*
+    * @brief dividing two fractions, after converting one of them 
+    * @param _float const reference to the float 
+    * @param frac   const reference to the fraction we add to the first fraction
+    * @return const Fraction The result of the division
+    * @note friend function, since the first argument is not a Fraction object
+    */
     friend const Fraction operator/(const float& _float, const Fraction& frac);
 
-    // comparison equality
+   
     bool operator==(const Fraction& other) const;
     bool operator==(const float& _float) const;
+    /*
+    * @brief compares two fractions, after converting one of them 
+    * @param _float const reference to the float 
+    * @param frac  const reference to the fraction we compare with the first fraction
+    * @return bool - true (1) if the first frac. is equal to the second,else false (0)
+    * @note friend function, since the first argument is not a Fraction object
+    */
     friend bool operator==(const float& _float, const Fraction& frac);
 
-    // comparison operations (>,<,>=,<=)
+    
     bool operator>(const Fraction& other) const;
     bool operator>(const float& float_) const;
+    /*
+    * @brief compares two fractions, after converting one of them 
+    * @param _float const reference to the float 
+    * @param frac  const reference to the fraction we compare with the first fraction
+    * @return bool - true (1) if the first frac. is bigger of the second,else false (0)
+    * @note friend function, since the first argument is not a Fraction object
+    */
     friend bool operator>(const float& float_, const Fraction& frac);
 
     bool operator<(const Fraction& other) const;
     bool operator<(const float& float_) const;
+      /*
+    * @brief compares two fractions, after converting one of them  
+    * @param _float const reference to the float 
+    * @param frac  const reference to the fraction we compare with the first fraction
+    * @return bool - true (1) if the first frac. is smaller of the second,else false (0)
+    * @note friend function, since the first argument is not a Fraction object
+    */
     friend bool operator<(const float& float_, const Fraction& frac);
 
     bool operator>=(const Fraction& other) const;
     bool operator>=(const float& float_) const;
+      /*
+    * @brief compares two fractions, after converting one of them 
+    * @param _float const reference to the float 
+    * @param frac  const reference to the fraction we compare with the first fraction
+    * @return bool - true (1) if the first frac. is bigger or equal to the second,else false (0)
+    * @note friend function, since the first argument is not a Fraction object
+    */
     friend bool operator>=(const float& float_, const Fraction& frac);
 
     bool operator<=(const Fraction& other) const;
     bool operator<=(const float& float_) const;
+      /*
+    * @brief compares two fractions, after converting one of them  
+    * @param _float const reference to the float 
+    * @param frac  const reference to the fraction we compare with the first fraction
+    * @return bool - true (1) if the first frac. is smaller or equal to the second,else false (0)
+    * @note friend function, since the first argument is not a Fraction object
+    */
     friend bool operator<=(const float& float_, const Fraction& frac);
 
+
     // prefix increment: returns the fraction after increment
+    /*
+    * @brief prefix increment of fraction by one
+    * @return Fraction& reference to the fraction after value increment
+    */
     Fraction& operator++();
 
     // postfix increment: returns copy of the fraction - its value before increment
     Fraction operator++(int dummy_flag_for_postfix_increment);
 
     // prefix decrease
-    Fraction& operator--()
-    {
-        numerator -= denominator;
-        reduced();
-        return *this;
-    }
+    Fraction& operator--();
 
     // postfix decrease
-    Fraction operator--(int dummy_flag_for_postfix_increment)
-    {
-        Fraction copy = *this;
-        --(*this);
-        return copy;
-    }
+    Fraction operator--(int dummy_flag_for_postfix_increment);
 
     //----------------------------------
     // friend global IO operators
@@ -200,7 +258,6 @@ public:
     The >> operator to read a fraction from an input stream
     by taking two integers as input.
     */
-
     friend std::istream &operator>>(std::istream &input, Fraction &fraction);
 
 }; // end of class Fraction
