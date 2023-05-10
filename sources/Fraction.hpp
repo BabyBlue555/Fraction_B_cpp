@@ -134,37 +134,59 @@ public:
     */
     friend const Fraction operator+(const float& _float, const Fraction& frac);
 
-    
+      /*
+    * @brief substacts two fractions 
+    * @param other The reference to the fraction to substract
+    * @return const Fraction The result of the substraction
+    */
     const Fraction operator-(const Fraction& other) const;
+     /*
+    * @brief substacts two fractions, after converting one of them 
+    * @param _float The reference to the float we substract
+    * @return const Fraction The result of the substraction
+    */
     const Fraction operator-(const float& _float) const;
       /*
-    * @brief adds two fractions, after converting one of them 
+    * @brief substracts two fractions, after converting one of them 
     * @param _float const reference to the float 
-    * @param frac   const reference to the fraction we add to the first fraction
-    * @return const Fraction The result of the addition
+    * @param frac  const reference to the fraction we substract from the first fraction
+    * @return const Fraction The result of the substraction
     * @note friend function, since the first argument is not a Fraction object
     */
     friend const Fraction operator-(const float& _float, const Fraction& frac);
 
-    
+       /*
+    * @brief multiplies two fractions 
+    * @param other The reference to the fraction to multiply
+    * @return const Fraction The result of the multiplication
+    */
     const Fraction operator*(const Fraction& other) const;
+     /*
+    * @brief multiplies two fractions, after converting one of them 
+    * @param _float The reference to the float we multiply
+    * @return const Fraction The result of the multiplication
+    */
     const Fraction operator*(const float& _float) const;
     /*
-    * @brief multiply two fractions, after converting one of them 
+    * @brief multiplies two fractions, after converting one of them 
     * @param _float const reference to the float 
-    * @param frac   const reference to the fraction we add to the first fraction
+    * @param frac  const reference to the fraction we multiply with the first fraction
     * @return const Fraction The result of the multiplication
     * @note friend function, since the first argument is not a Fraction object
     */
     friend const Fraction operator*(const float& _float, const Fraction& frac);
 
-
+         /*
+    * @brief dividing two fractions 
+    * @param other The reference to the fraction to divide
+    * @return const Fraction The result of the division
+    */
     const Fraction operator/(const Fraction& other) const;
     const Fraction operator/(const float& _float) const;
       /*
     * @brief dividing two fractions, after converting one of them 
-    * @param _float const reference to the float 
-    * @param frac   const reference to the fraction we add to the first fraction
+    * @param _float const reference to the float (that becomes a fraction)
+    * @param frac const reference to the fraction we divide the first fraction with
     * @return const Fraction The result of the division
     * @note friend function, since the first argument is not a Fraction object
     */
@@ -228,20 +250,28 @@ public:
     friend bool operator<=(const float& float_, const Fraction& frac);
 
 
-    // prefix increment: returns the fraction after increment
     /*
     * @brief prefix increment of fraction by one
     * @return Fraction& reference to the fraction after value increment
     */
     Fraction& operator++();
 
-    // postfix increment: returns copy of the fraction - its value before increment
+     /*
+    * @brief postfix increment of fraction by one
+    * @return Fraction copy of the fraction before incrementation
+    */
     Fraction operator++(int dummy_flag_for_postfix_increment);
 
-    // prefix decrease
+     /*
+    * @brief prefix decrement of fraction by one
+    * @return Fraction& reference to the fraction after value decrement
+    */
     Fraction& operator--();
 
-    // postfix decrease
+       /*
+    * @brief postfix decrement of fraction by one
+    * @return Fraction copy of the fraction before decrementation
+    */
     Fraction operator--(int dummy_flag_for_postfix_increment);
 
     //----------------------------------
@@ -249,14 +279,14 @@ public:
     //----------------------------------
 
     /*
-     The << operator to print a fraction to an output stream
-    in the format “numerator/denominator”.
+     * @brief prints a fraction to an output stream.
+     * @return std::ostream & reference to output stream - the fraction in the format “numerator/denominator”
     */
     friend std::ostream &operator<<(std::ostream &output, const Fraction &frac);
 
     /*
-    The >> operator to read a fraction from an input stream
-    by taking two integers as input.
+     * @brief reads a fraction from an input stream by taking two integers as input.
+     * @return std::istream & reference to input stream
     */
     friend std::istream &operator>>(std::istream &input, Fraction &fraction);
 
